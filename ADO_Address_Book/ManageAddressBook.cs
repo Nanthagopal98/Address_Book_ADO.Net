@@ -175,5 +175,25 @@ namespace ADO_Address_Book
             }
             finally { connection.Close(); }
         }
+        public void DeleteAddress()
+        {
+            SqlConnection connection = new SqlConnection(connectingstring);
+            try
+            {
+                Console.WriteLine("Enter First Name To Delete");
+                string fname = Console.ReadLine();
+                connection.Open();
+                SqlCommand command = new SqlCommand("DELETE_PERSON", connection);
+                command.CommandType = CommandType.StoredProcedure;
+                command.Parameters.AddWithValue("@FIRST_NAME", fname);                          
+                SqlDataReader reader =  command.ExecuteReader();
+            }
+            catch(Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            finally
+            { connection.Close(); }
+        }
     }
 }
