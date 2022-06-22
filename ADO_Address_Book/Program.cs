@@ -4,6 +4,7 @@
 ManageAddressBook run = new ManageAddressBook();
 Console.WriteLine("1 - To Add Data");
 Console.WriteLine("2 - To Display Data");
+Console.WriteLine("3 - To Update Data");
 int option = Convert.ToInt32(Console.ReadLine());
 switch (option)
 {
@@ -13,7 +14,12 @@ switch (option)
     case 2:
         run.display();
         break;
+    case 3:
+        run.UpdateData();
+        run.display();
+        break;
 }
+
 
 
 

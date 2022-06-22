@@ -106,5 +106,74 @@ namespace ADO_Address_Book
                 connection.Close();
             }
         }
+        public void UpdateData()
+        {
+            SqlConnection connection = new SqlConnection(connectingstring);
+            try
+            {
+                string query = "";
+                Console.WriteLine("Enter first name to Find");
+                string fname = Console.ReadLine();
+                Console.WriteLine("1 - FIRST_NAME \n2 - LAST_NAME \n3 - ADDRESS \n4 - CITY \n5 - STATE \n6 - PIN \n7 - PHONE \n8 - EMAIL \n9 - CONTACT_TYPE");
+                int select = Convert.ToInt32(Console.ReadLine());
+                switch (select)
+                {
+                    case 1:
+                        Console.WriteLine("Enter First Name To Update");
+                        string update = Console.ReadLine();
+                        query = "UPDATE AddressBook SET FIRST_NAME = '" + update + "' WHERE FIRST_NAME = '" + fname + "'";
+                        break;
+                    case 2:
+                        Console.WriteLine("Enter Last Name To Update");
+                        string lname = Console.ReadLine();
+                        query = "UPDATE AddressBook SET LAST_NAME = '" + lname + "' WHERE FIRST_NAME = '" + fname + "'";
+                        break;
+                    case 3:
+                        Console.WriteLine("Enter Address To Update");
+                        string address = Console.ReadLine();
+                        query = "UPDATE AddressBook SET ADDRESS = '" + address + "' WHERE FIRST_NAME = '" + fname + "'";
+                        break;
+                    case 4:
+                        Console.WriteLine("Enter City To Update");
+                        string city = Console.ReadLine();
+                        query = "UPDATE AddressBook SET CITY = '" + city + "' WHERE FIRST_NAME = '" + fname + "'";
+                        break;
+                    case 5:
+                        Console.WriteLine("Enter Stata To Update");
+                        string state = Console.ReadLine();
+                        query = "UPDATE AddressBook SET STATE = '" + state + "' WHERE FIRST_NAME = '" + fname + "'";
+                        break;
+                    case 6:
+                        Console.WriteLine("Enter Pin To Update");
+                        int pin = Convert.ToInt32(Console.ReadLine());
+                        query = "UPDATE AddressBook SET PIN = '" + pin + "' WHERE FIRST_NAME = '" + fname + "'";
+                        break;
+                    case 7:
+                        Console.WriteLine("Enter Phone To Update");
+                        double phone = Convert.ToDouble(Console.ReadLine());
+                        query = "UPDATE AddressBook SET PHONE = '" + phone + "' WHERE FIRST_NAME = '" + fname + "'";
+                        break;
+                    case 8:
+                        Console.WriteLine("Enter Email To Update");
+                        string email = Console.ReadLine();
+                        query = "UPDATE AddressBook SET EMAIL = '" + email + "' WHERE FIRST_NAME = '" + fname + "'";
+                        break;
+                    case 9:
+                        Console.WriteLine("Enter Group To Update");
+                        string group = Console.ReadLine();
+                        query = "UPDATE AddressBook SET CONTACT_TYPE = '" + group + "' WHERE FIRST_NAME = '" + fname + "'";
+                        break;
+
+                }
+                SqlCommand command = new SqlCommand(query, connection);
+                connection.Open();
+                command.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            finally { connection.Close(); }
+        }
     }
 }
