@@ -10,6 +10,7 @@ namespace ADO_Address_Book
 {
     public class ManageAddressBook
     {
+        Address_Book_Model model = new Address_Book_Model();
         public static string connectingstring = @"Data Source = (localdb)\MSSQLLocalDB;Initial Catalog = Address_Book";       
         public bool AddData()
         {
@@ -58,6 +59,45 @@ namespace ADO_Address_Book
                 }
             }
             catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
+        }
+        public void display()
+        {
+            SqlConnection connection = new SqlConnection(connectingstring);
+            try
+            {
+                string query = "SELECT * FROM AddressBook";
+                SqlCommand command = new SqlCommand(query, connection);
+                connection.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        model.first_name = reader.GetString(1);
+                        model.last_name = reader.GetString(2);
+                        model.address = reader.GetString(3);
+                        model.city = reader.GetString(4);
+                        model.state = reader.GetString(5);
+                        model.pin = reader.GetInt32(6);
+                        model.phone = reader.GetDouble(7);
+                        model.email = reader.GetString(8);
+                        model.group = reader.GetString(9);
+                        //Console.WriteLine("First Name \t|\t Last Name \t|\t Address \t|\t City \t|\t State \t|\t Pin \t|\t Phone \t|\t Email \t|\t Group \t|\t"+model.first_name);
+                        Console.WriteLine("First Name : " + model.first_name+"\nLast Name : "+ model.last_name+"\nAddress : "+model.address
+                            +"\nCity : "+model.city+"\nState : "+model.state+"\nPin : "+model.pin+"\nPhone : "+model.phone+"\nEmail : "+
+                            model.email+"\nGroup : "+model.group);
+                        Console.WriteLine("=============================");
+                    }
+                }
+            }
+            catch(Exception e)
             {
                 throw new Exception(e.Message);
             }
