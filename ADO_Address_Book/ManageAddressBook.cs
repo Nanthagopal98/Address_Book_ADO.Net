@@ -10,9 +10,10 @@ namespace ADO_Address_Book
 {
     public class ManageAddressBook
     {
+        List<Address_Book_Model> list = new List<Address_Book_Model>();
         Address_Book_Model model = new Address_Book_Model();
         public static string connectingstring = @"Data Source = (localdb)\MSSQLLocalDB;Initial Catalog = Address_Book";       
-        public bool AddData()
+        public bool AddData(Address_Book_Model model)
         {
             SqlConnection connection = new SqlConnection(connectingstring);
             try
@@ -21,34 +22,17 @@ namespace ADO_Address_Book
                 {
                     SqlCommand command = new SqlCommand("ADD_PERSON", connection);
                     command.CommandType = CommandType.StoredProcedure;
-                    Console.WriteLine("Enter first name");
-                    string fname = Console.ReadLine();
-                    command.Parameters.AddWithValue("@FIRST_NAME", fname);
-                    Console.WriteLine("Enter last name");
-                    string lname = Console.ReadLine();
-                    command.Parameters.AddWithValue("@LAST_NAME", lname);
-                    Console.WriteLine("Enter Address");
-                    string address = Console.ReadLine();
-                    command.Parameters.AddWithValue("@ADDRESS", address);
-                    Console.WriteLine("Enter City");
-                    string city = Console.ReadLine();
-                    command.Parameters.AddWithValue("@CITY", city);
-                    Console.WriteLine("Enter State");
-                    string state = Console.ReadLine();
-                    command.Parameters.AddWithValue("@STATE", state);
-                    Console.WriteLine("Enter PinCode");
-                    int pin = Convert.ToInt32(Console.ReadLine());
-                    command.Parameters.AddWithValue("@PIN", pin);
-                    Console.WriteLine("Enter Pnone");
-                    double phone = Convert.ToDouble(Console.ReadLine());
-                    command.Parameters.AddWithValue("@PHONE", phone);
-                    Console.WriteLine("Enter Email");
-                    string email = Console.ReadLine();
-                    command.Parameters.AddWithValue("@EMAIL", email);
-                    Console.WriteLine("Enter Group name");
-                    string group = Console.ReadLine();
-                    command.Parameters.AddWithValue("@CONTACT_TYPE", group);
+                    command.Parameters.AddWithValue("@FIRST_NAME", model.first_name);
+                    command.Parameters.AddWithValue("@LAST_NAME", model.last_name);
+                    command.Parameters.AddWithValue("@ADDRESS", model.address);
+                    command.Parameters.AddWithValue("@CITY", model.city);
+                    command.Parameters.AddWithValue("@STATE", model.state);
+                    command.Parameters.AddWithValue("@PIN", model.pin);
+                    command.Parameters.AddWithValue("@PHONE", model.phone);
+                    command.Parameters.AddWithValue("@EMAIL", model.email);
+                    command.Parameters.AddWithValue("@CONTACT_TYPE", model.group);
                     connection.Open();
+                    Console.WriteLine(model.first_name + "Added");
                     var result = command.ExecuteNonQuery();
                     connection.Close();
                     if (result != 0)
@@ -185,8 +169,8 @@ namespace ADO_Address_Book
                 connection.Open();
                 SqlCommand command = new SqlCommand("DELETE_PERSON", connection);
                 command.CommandType = CommandType.StoredProcedure;
-                command.Parameters.AddWithValue("@FIRST_NAME", fname);                          
-                SqlDataReader reader =  command.ExecuteReader();
+                command.Parameters.AddWithValue("@FIRST_NAME", fname);       
+                command.ExecuteNonQuery();
             }
             catch(Exception e)
             {
@@ -194,6 +178,51 @@ namespace ADO_Address_Book
             }
             finally
             { connection.Close(); }
+        }
+        public void AddPersonUsingThread(List<Address_Book_Model> list)
+        {
+            Console.WriteLine("Enter Number Of Person to Add");
+            int totalContact = Convert.ToInt32(Console.ReadLine());
+            int count = 0;
+            while (totalContact > count)
+            {
+                Address_Book_Model model = new Address_Book_Model();
+                GetSetPersons(model);
+                list.Add(model);
+                count++;
+            }
+            DateTime startThreadTime = DateTime.Now;
+            list.ForEach(detail =>
+            {                
+                Thread thread = new Thread(() =>
+                 {
+                     AddData(detail);
+                 });
+                thread.Start();
+            });
+            DateTime endTime = DateTime.Now;
+            Console.WriteLine("Elapsed Time : " + (endTime - startThreadTime));
+        }
+        public void GetSetPersons(Address_Book_Model model)
+        {
+            Console.WriteLine("Enter first name");
+            model.first_name = Console.ReadLine();
+            Console.WriteLine("Enter last name");
+            model.last_name = Console.ReadLine();
+            Console.WriteLine("Enter Address");
+            model.address = Console.ReadLine();
+            Console.WriteLine("Enter City");
+            model.city = Console.ReadLine();
+            Console.WriteLine("Enter State");
+            model.state = Console.ReadLine();
+            Console.WriteLine("Enter PinCode");
+            model.pin = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Enter Pnone");
+            model.phone = Convert.ToDouble(Console.ReadLine());
+            Console.WriteLine("Enter Email");
+            model.email = Console.ReadLine();
+            Console.WriteLine("Enter Group name");
+            model.group = Console.ReadLine();
         }
     }
 }
