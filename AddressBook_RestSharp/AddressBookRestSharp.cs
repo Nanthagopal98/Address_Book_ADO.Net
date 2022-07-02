@@ -35,6 +35,31 @@ namespace AddressBook_RestSharp
             //Console.WriteLine(response.Content);
             Assert.AreEqual(3, list.Count);
         }
-        
+        //Person Added in Friend AddressBook
+        [TestMethod]
+        public void GivenInputData_AddedToFriendGropu()
+        {
+            RestRequest request = new RestRequest("/friend", Method.Post);
+            var personFriend = new TestModel { firstName = "Thamarai", lastName = "Ragav" };
+            request.AddParameter("application/json", personFriend, ParameterType.RequestBody);
+            RestResponse response = client.Post(request);
+            Assert.AreEqual(response.StatusCode, HttpStatusCode.Created);
+            TestModel list = JsonConvert.DeserializeObject<TestModel>(response.Content);
+            Console.WriteLine(response.Content);
+            Assert.AreEqual(personFriend.firstName, list.firstName);          
+        }
+        //Person Added in Family AddressBook
+        [TestMethod]
+        public void GivenInputData_AddedToFamilyGropu()
+        {
+            RestRequest request = new RestRequest("/family", Method.Post);
+            var personFriend = new TestModel { firstName = "Ragav", lastName = "Vijay" };
+            request.AddParameter("application/json", personFriend, ParameterType.RequestBody);
+            RestResponse response = client.Post(request);
+            Assert.AreEqual(response.StatusCode, HttpStatusCode.Created);
+            TestModel list = JsonConvert.DeserializeObject<TestModel>(response.Content);
+            Console.WriteLine(response.Content);
+            Assert.AreEqual(personFriend.firstName, list.firstName);
+        }
     }
 }
