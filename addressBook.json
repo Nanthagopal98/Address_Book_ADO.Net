@@ -1,0 +1,36 @@
+{
+  "friend": [
+    {
+      "id": 1,
+      "firstName": "Nantha",
+      "lastName": "Shan"
+    },
+    {
+      "id": 2,
+      "firstName": "Ela",
+      "lastName": "Appu"
+    },
+    {
+      "id": 3,
+      "firstName": "Subash",
+      "lastName": "Manik"
+    }
+  ],
+  "family": [
+    {
+      "id": 1,
+      "firstName": "Shan",
+      "lastName": "Marappa"
+    },
+    {
+      "id": 2,
+      "firstName": "Jothi",
+      "lastName": "Marappa"
+    },
+    {
+      "id": 3,
+      "firstName": "Thenu",
+      "lastName": "Shan"
+    }
+  ]
+}

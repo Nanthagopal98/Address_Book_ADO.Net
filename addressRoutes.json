@@ -1,0 +1,12 @@
+{
+    "/friend/list" : "/friend",
+    "/friend/get/:id" : "/friend/:id",
+    "/friend/create" : "/friend",
+    "/friend/update/:id" : "/friend/:id",
+    "/friend/delete/:id" : "/friend/:id",
+    "/famliy/list" : "/famliy",
+    "/famliy/get/:id" : "/famliy/:id",
+    "/famliy/create" : "/famliy",
+    "/famliy/update/:id" : "/famliy/:id",
+    "/famliy/delete/:id" : "/famliy/:id"
+}
