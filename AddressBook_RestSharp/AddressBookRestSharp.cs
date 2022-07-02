@@ -20,7 +20,7 @@ namespace AddressBook_RestSharp
         {
             RestRequest request = new RestRequest("/friend", Method.Get);
             RestResponse response = client.Execute(request);
-            Assert.AreEqual(response.StatusCode,HttpStatusCode.OK);
+            Assert.AreEqual(response.StatusCode, HttpStatusCode.OK);
             List<TestModel> list = JsonConvert.DeserializeObject<List<TestModel>>(response.Content);
             //Console.WriteLine(response.Content);
             Assert.AreEqual(3, list.Count);
@@ -46,7 +46,7 @@ namespace AddressBook_RestSharp
             Assert.AreEqual(response.StatusCode, HttpStatusCode.Created);
             TestModel list = JsonConvert.DeserializeObject<TestModel>(response.Content);
             Console.WriteLine(response.Content);
-            Assert.AreEqual(personFriend.firstName, list.firstName);          
+            Assert.AreEqual(personFriend.firstName, list.firstName);
         }
         //Person Added in Family AddressBook
         [TestMethod]
@@ -60,6 +60,18 @@ namespace AddressBook_RestSharp
             TestModel list = JsonConvert.DeserializeObject<TestModel>(response.Content);
             Console.WriteLine(response.Content);
             Assert.AreEqual(personFriend.firstName, list.firstName);
+        }
+        [TestMethod]
+        public void GivenId_SholdDeleteContact()
+        {
+            RestRequest request = new RestRequest("/friend/4", Method.Delete);
+            RestResponse response = client.Execute(request);
+            //Assert.AreEqual(response.StatusCode,HttpStatusCode.ok)
+            RestRequest getRequest = new RestRequest("/friend", Method.Get);
+            RestResponse getresponse = client.Execute(getRequest);
+            Console.WriteLine(getresponse.Content);
+            List<TestModel> list = JsonConvert.DeserializeObject<List<TestModel>>(getresponse.Content);           
+            Assert.AreEqual(3, list.Count);
         }
     }
 }
