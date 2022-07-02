@@ -70,8 +70,19 @@ namespace AddressBook_RestSharp
             RestRequest getRequest = new RestRequest("/friend", Method.Get);
             RestResponse getresponse = client.Execute(getRequest);
             Console.WriteLine(getresponse.Content);
-            List<TestModel> list = JsonConvert.DeserializeObject<List<TestModel>>(getresponse.Content);           
+            List<TestModel> list = JsonConvert.DeserializeObject<List<TestModel>>(getresponse.Content);
             Assert.AreEqual(3, list.Count);
+        }
+        [TestMethod]
+        public void GivenUpdatedValue_ShoulsUpdatedInServer()
+        {
+            RestRequest request = new RestRequest("/friend/3", Method.Put);
+            var input = new TestModel { firstName = "Sowgan", lastName = "Raja" };
+            request.AddParameter("application/json", input, ParameterType.RequestBody);
+            RestResponse response = client.Execute(request);
+            Console.WriteLine(response.Content);
+            TestModel list = JsonConvert.DeserializeObject<TestModel>(response.Content);
+            Assert.AreEqual(input.firstName, list.firstName);
         }
     }
 }
